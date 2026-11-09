@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechStore</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f3f6;
+}
+
+header {
+    background: #172554;
+    color: white;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 30px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 15px;
+    font-size: 17px;
+}
+
+.banner {
+    background: linear-gradient(120deg, #2563eb, #7c3aed);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.banner h2 {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.banner p {
+    font-size: 20px;
+}
+
+.container {
+    padding: 40px;
+}
+
+.container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 10px #ccc;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.card img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.card h3 {
+    margin: 15px;
+}
+
+.price {
+    color: #2563eb;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #1e40af;
+}
+
+.cart {
+    text-align: center;
+    background: white;
+    margin: 30px;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+footer {
+    background: #172554;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    margin-top: 40px;
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .banner h2 {
+        font-size: 28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>TechStore</h1>
+
+    <nav>
+        <a href="#home">Башкы бет</a>
+        <a href="#products">Товарлар</a>
+        <a href="#cart">Себет</a>
+    </nav>
+</header>
+
+<section class="banner" id="home">
+    <h2>TechStore интернет-дүкөнү</h2>
+    <p>Сапаттуу товарлар жеткиликтүү баада!</p>
+</section>
+
+<div class="container" id="products">
+
+    <h2>Биздин товарлар</h2>
+
+    <div class="products">
+
+        <div class="card">
+            <img src="https://placehold.co/200x200?text=Phone">
+            <h3>Смартфон</h3>
+            <p>Заманбап смартфон</p>
+            <div class="price">25000 сом</div>
+            <button onclick="addCart('Смартфон', 25000)">
+                Сатып алуу
+            </button>
+        </div>
+
+        <div class="card">
+            <img src="https://placehold.co/200x200?text=Laptop">
+            <h3>Ноутбук</h3>
+            <p>Күчтүү жана ыңгайлуу</p>
+            <div class="price">55000 сом</div>
+            <button onclick="addCart('Ноутбук', 55000)">
+                Сатып алуу
+            </button>
+        </div>
+
+        <div class="card">
+            <img src="https://placehold.co/200x200?text=Headphones">
+            <h3>Наушник</h3>
+            <p>Сапаттуу үн</p>
+            <div class="price">2500 сом</div>
+            <button onclick="addCart('Наушник', 2500)">
+                Сатып алуу
+            </button>
+        </div>
+
+        <div class="card">
+            <img src="https://placehold.co/200x200?text=Watch">
+            <h3>Саат</h3>
+            <p>Акылдуу саат</p>
+            <div class="price">4500 сом</div>
+            <button onclick="addCart('Саат', 4500)">
+                Сатып алуу
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div class="cart" id="cart">
+
+    <h2>🛒 Сатып алуу себети</h2>
+
+    <div id="cartItems">
+        Азырынча товар жок
+    </div>
+
+    <h3 id="total">Жалпы сумма: 0 сом</h3>
+
+    <br>
+
+    <button onclick="clearCart()">Себетти тазалоо</button>
+
+</div>
+
+<footer>
+    <h3>TechStore</h3>
+    <p>© 2026 Бардык укуктар корголгон</p>
+    <p>Байланыш: techstore@gmail.com</p>
+</footer>
+
+<script>
+
+let cart = [];
+
+function addCart(name, price) {
+
+    cart.push({
+        name: name,
+        price: price
+    });
+
+    showCart();
+
+}
+
+function showCart() {
+
+    let items = document.getElementById("cartItems");
+    let total = 0;
+
+    items.innerHTML = "";
+
+    cart.forEach((product, index) => {
+
+        total += product.price;
+
+        items.innerHTML += `
+            <p>
+                ${index + 1}. ${product.name}
+                - ${product.price} сом
+            </p>
+        `;
+
+    });
+
+    if (cart.length === 0) {
+        items.innerHTML = "Азырынча товар жок";
+    }
+
+    document.getElementById("total").innerHTML =
+        "Жалпы сумма: " + total + " сом";
+
+}
+
+function clearCart() {
+
+    cart = [];
+
+    showCart();
+
+    alert("Себет тазаланды!");
+
+}
+
+</script>
+
+</body>
+</html>
